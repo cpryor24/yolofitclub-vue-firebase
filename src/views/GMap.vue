@@ -1,13 +1,15 @@
 <template>
-  <h2>GMap</h2>
+  <GoogleMap />
 </template>
 
 <script>
+  import GoogleMap from '@/components/layout/GoogleMap';
+
   export default {
-    name: 'GMap', 
+    name: 'GMap',
     data() {
       return {
-
+        GoogleMap
       }
     }
   }

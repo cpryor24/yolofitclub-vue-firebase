@@ -32,7 +32,7 @@
             .then(cred => {
               console.log(cred.user)
               this.$router.push({
-                name: 'Dashboard';
+                name: 'Dashboard'
               })
             }).catch(err => {
               this.inputRules = [err.message];
