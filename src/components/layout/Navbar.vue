@@ -6,7 +6,7 @@
     </v-snackbar>
 
     <v-toolbar flat app>
-      <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link :to="{ name: 'Dashboard' }">
           <span class="font-weight-light">Yolofit</span>
@@ -15,7 +15,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-menu offset-y>
+      <v-menu offset-y v-if="user">
         <v-btn flat slot="activator" color="red">
           <v-icon left>expand_more</v-icon>
           <span>Menu</span>
@@ -26,15 +26,19 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn flat color="grey">
+      <v-btn flat color="grey" v-if="!user">
         <span><router-link :to="{ name: 'Signup' }">Signup</router-link></span>
       </v-btn>
-      <v-btn flat color="grey">
+      <v-btn flat color="grey" v-if="!user">
         <span><router-link :to="{ name: 'Login' }">Login</router-link></span>
       </v-btn>
-      <v-btn flat color="grey">
+      <ul>
+        <li v-if="user">{{ user.email }}</li>
+      </ul>
+      <v-btn flat color="grey" v-if="user">
         <span><a @click="logout">Logout</a></span>
       </v-btn>
+      
     </v-toolbar>
 
     <v-navigation-drawer v-model="drawer" app class="primary">
@@ -73,6 +77,7 @@
     },
     data() {
       return {
+        user: null,
         drawer: false,
         links: [
           { icon: 'dashboard', text: 'Dashboard', route: '/'},
@@ -93,6 +98,16 @@
           })
        })
       }
+    },
+    created(){
+      // let user = firebase.auth().currentUser;
+      firebase.auth().onAuthStateChanged( user => {
+        if(user){
+          this.user = user;
+        } else {
+          this.user = null;
+        }
+      })
     }
   }
 </script>
