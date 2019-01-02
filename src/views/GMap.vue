@@ -6,11 +6,8 @@
   import GoogleMap from '@/components/layout/GoogleMap';
 
   export default {
-    name: 'GMap',
-    data() {
-      return {
-        GoogleMap
-      }
+    components: {
+      GoogleMap
     }
   }
 </script>
