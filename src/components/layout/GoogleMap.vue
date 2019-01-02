@@ -5,12 +5,14 @@
 </template>
 <script>
   import firebase from 'firebase';
+  import db from '@/firebase/fb';
+
   export default {
     name: 'GMap',
     data() {
       return {
-        lat: 53,
-        lng: -2
+        lat: 31,
+        lng: -99
       }
     },
     methods: {
@@ -21,15 +23,47 @@
             lng: this.lng
           },
           zoom: 6,
-          maxZoom: 10,
+          maxZoom: 8,
           minZoom: 3,
           streetViewControl: false
         })
       }
     },
     mounted(){
-      this.renderMap()
-      console.log(firebase.auth().currentUser)
+      // get current user
+      let user = firebase.auth().currentUser
+
+      // get user geolocation
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(position => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          
+          // find the user record and update geo coords
+          db.collection('users').where('user_id', '==', user.uid).get()
+            .then(snapshot => {
+              snapshot.forEach((doc) => {
+                db.collection('users').doc(doc.id).update({
+                  geolocation: {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                  }
+                })
+              })
+            }).then(() => {
+              this.renderMap();
+            })
+        }, (err) => {
+          console.log(err);
+          this.renderMap();
+        }, {
+          maximumAge: 60000,
+          timeout: 3000
+        })
+      } else {
+        // position center by default value
+        this.renderMap()
+      }
     }
   }
 </script>
