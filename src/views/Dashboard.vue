@@ -1,14 +1,12 @@
 <template>
-  <h2>Dashboard</h2>
+  <ViewDashboard />
 </template>
 
 <script>
+  import ViewDashboard from '@/components/layout/ViewDashboard';
   export default {
-    name: 'Dashboard', 
-    data() {
-      return {
-
-      }
+    components: {
+      ViewDashboard
     }
   }
 </script>

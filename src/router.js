@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import GMap from '@/views/GMap';
 import Signup from '@/components/auth/Signup';
 import Login from '@/components/auth/Login';
-import Dashboard from '@/views/Dashboard';
+import ViewDashboard from '@/views/Dashboard';
 import Clients from '@/views/Clients';
 import BMI from '@/views/BMI';
 import Workouts from '@/views/Workouts';
@@ -20,7 +20,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Dashboard',
-      component: Dashboard,
+      component: ViewDashboard,
       meta: {
         requiresAuth: true
       }

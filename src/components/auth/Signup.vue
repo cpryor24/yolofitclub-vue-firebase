@@ -4,9 +4,11 @@
       <h2>Sign up</h2>
     </v-card-title>
     <v-card-text>
-      <v-form class="px-3 signup" ref="form">
-        <v-text-field class="mb-3" v-model="email" label="Email" prepend-icon="email" ></v-text-field>
-        <v-text-field class="mb-3" v-model="password" label="Password" prepend-icon="security" ></v-text-field>
+      <v-form class="px-3 signup"  ref="form">
+        <v-text-field class="mb-3" v-model="email" label="Email" prepend-icon="email" :rules="inputRules"></v-text-field>
+        <v-text-field class="mb-3" v-model="password" label="Password" prepend-icon="security" :rules="inputRules"></v-text-field>
+        <v-text-field class="mb-3" v-model="first_name" label="First Name" prepend-icon="security" :rules="inputRules"></v-text-field>
+        <v-text-field class="mb-3" v-model="last_name" label="Last Name" prepend-icon="security" :rules="inputRules"></v-text-field>
         <v-text-field class="mb-3" v-model="alias" label="Alias" prepend-icon="person" :rules="inputRules"></v-text-field>
         <v-btn flat class="success mx-0" @click.prevent="signup">Signup</v-btn>
       </v-form>
@@ -29,7 +31,7 @@
         last_name: null,
         alias: null,
         inputRules: [
-          v => !!v || 'You must enter all fields'
+          v => !!v || 'This field is required'
         ],
         slug: null
       }
@@ -51,12 +53,14 @@
                 .then(cred => {
                   ref.set({
                     alias: this.alias,
+                    first_name: this.first_name,
+                    last_name: this.last_name,
                     geolocation: null,
                     user_id: cred.user.uid
                   })
                 }).then(() => {
                   this.$router.push({
-                    name: 'GMap'
+                    name: 'Dashboard'
                   })
                 })
                 .catch(err => {
