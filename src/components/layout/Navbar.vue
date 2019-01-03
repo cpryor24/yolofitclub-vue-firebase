@@ -63,6 +63,17 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+      <!-- Personal Trainer links -->
+      <v-list>
+        <v-list-tile v-for="trainerLink in trainerLinks" :key="trainerLink.text" router :to="trainerLink.route">
+          <v-list-tile-action>
+            <v-icon class="white--text">{{ trainerLink.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="white--text">{{ trainerLink.text }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-navigation-drawer>
   </nav>
 </template>
@@ -85,6 +96,9 @@
           { icon: 'account_box', text: 'My Profile', route: '/profile'},
           { icon: 'place', text: 'Map', route: '/gmap'},
           { icon: 'nature_people', text: 'Body Mass Index (BMI)', route: '/bmi'},
+        ],
+        personalTrainer: false,
+        trainerLinks: [
           { icon: 'supervisor_account', text: 'Clients', route: '/clients'},
         ],
         snackbar: false
