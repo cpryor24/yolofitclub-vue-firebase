@@ -7,6 +7,7 @@ import Dashboard from '@/views/Dashboard';
 import Clients from '@/views/Clients';
 import BMI from '@/views/BMI';
 import Workouts from '@/views/Workouts';
+import ViewProfile from '@/views/Profile';
 import firebase from 'firebase';
 
 Vue.use(Router)
@@ -61,6 +62,14 @@ const router = new Router({
       path: '/workouts',
       name: 'Workouts',
       component: Workouts,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile/:id',
+      name: 'ViewProfile',
+      component: ViewProfile,
       meta: {
         requiresAuth: true
       }
