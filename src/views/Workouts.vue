@@ -9,6 +9,11 @@
       return {
 
       }
+    },
+    computed: {
+      workouts() {
+        return this.$store.state.workouts;
+      }
     }
   }
 </script>

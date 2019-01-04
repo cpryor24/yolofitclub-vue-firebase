@@ -50,7 +50,7 @@
           <p class="white--text subheading mt-1">The Username</p>
         </v-flex>
         <v-flex class="mt-4 mb-3">
-          popup to add workouts
+          <ScheduleWorkout @workoutAdded="snackbar = true" />
         </v-flex>
       </v-layout>
       <v-list>
@@ -80,11 +80,12 @@
 
 <script>
   import firebase from 'firebase';
+  import ScheduleWorkout from '@/components/layout/ScheduleWorkout';
 
   export default {
     name: 'Navbar',
     components: {
-
+      ScheduleWorkout
     },
     data() {
       return {
