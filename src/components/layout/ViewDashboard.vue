@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard">
     <h1 class="subheading greay--text">Dashboard</h1>
-    
     <v-container class="my-5">
 
       <v-layout row class="mb-3">
@@ -20,7 +19,6 @@
           </v-btn>
           <span>Sort by person name</span>
         </v-tooltip>
-        
       </v-layout>
 
       <v-card flat v-for="workout in workouts" :key="workout.id">
@@ -52,17 +50,18 @@
 
 <script>
   import db from '@/firebase/fb';
+  import firebase from 'firebase';
 
   export default {
     name: 'ViewDashboard',
     data() {
       return {
-        //  workouts: []
+       
       }
     },
     computed: {
       workouts() {
-        return this.$store.state.workouts;
+        return this.$store.getters.getWorkouts;
       }
     },
     methods: {
@@ -71,18 +70,8 @@
       }
     },
     created() {
-      db.collection('workouts').onSnapshot(res => {
-        const changes = res.docChanges();
-
-        changes.forEach(change => {
-          if(change.type === 'added'){
-            this.workouts.push({
-              ...change.doc.data(),
-              id: change.doc.id
-            })
-          }
-        })
-      })
+      console.log('uid', firebase.auth().currentUser.uid)
+      this.$store.dispatch('setWorkouts')
     }
   }
 
@@ -115,4 +104,3 @@
   }
 
 </style>
-
