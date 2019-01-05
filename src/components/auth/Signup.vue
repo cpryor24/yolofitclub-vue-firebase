@@ -5,14 +5,18 @@
     </v-card-title>
     <v-card-text>
       <v-form class="px-3 signup"  ref="form">
-        <v-text-field class="mb-3" v-model="email" label="Email" prepend-icon="email" :rules="inputRules"></v-text-field>
-        <v-text-field class="mb-3" v-model="password" label="Password" prepend-icon="security" :rules="inputRules"></v-text-field>
-        <v-text-field class="mb-3" v-model="first_name" label="First Name" prepend-icon="security" :rules="inputRules"></v-text-field>
-        <v-text-field class="mb-3" v-model="last_name" label="Last Name" prepend-icon="security" :rules="inputRules"></v-text-field>
-        <v-text-field class="mb-3" v-model="alias" label="Alias" prepend-icon="person" :rules="inputRules"></v-text-field>
-        <v-btn flat class="success mx-0" @click.prevent="signup">Signup</v-btn>
+        <v-text-field class="mb-3" v-model="email" label="Email" name="email" type="email" prepend-icon="email" :rules="emailRules" required></v-text-field>
+        <v-text-field class="mb-3" v-model="password" label="Password" name="password" id="password" type="password" prepend-icon="lock" :rules="passwordRules" required></v-text-field>
+        <v-text-field class="mb-3" v-model="first_name" label="First Name" name="first_name" type="text" prepend-icon="security" :rules="inputRules" required></v-text-field>
+        <v-text-field class="mb-3" v-model="last_name" label="Last Name" name="last_name" type="text" prepend-icon="security" :rules="inputRules" required></v-text-field>
+        <v-text-field class="mb-3" v-model="alias" label="Alias" name="alias" type="text" prepend-icon="person" :rules="aliasRules" required></v-text-field>
+        <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn flat class="mx-0" color="primary"  @click.prevent="signup">Signup</v-btn>
+      </v-card-actions>
       </v-form>
     </v-card-text>
+    
   </v-card>
 </template>
 
@@ -30,6 +34,19 @@
         first_name: null,
         last_name: null,
         alias: null,
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        passwordRules: [
+          v => !!v || 'Password is required',
+          // v => v.length >= 6 || 'Password must be greater than 6 characters'
+        ],
+        
+        aliasRules: [
+          v => !!v || 'Alias is required',
+          // v => v.length >= 3 || 'Password must be greater than 3 characters'
+        ],
         inputRules: [
           v => !!v || 'This field is required'
         ],
@@ -38,35 +55,19 @@
     },
     methods: {
       signup() {
-        if(this.alias && this.email && this.password){
+        if(this.$refs.form.validate()){
           this.slug = slugify(this.alias, {
             replacement: '-',
             remove: /[$*_+`.()'"!\-:]/g,
             lower: true
           });
-          let ref = db.collection('users').doc(this.slug);
-          ref.get().then(doc => {
-            if(doc.exists){
-              this.inputRules = ['This alias already exists'];
-            } else {
-              firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-                .then(cred => {
-                  ref.set({
-                    alias: this.alias,
-                    first_name: this.first_name,
-                    last_name: this.last_name,
-                    geolocation: null,
-                    user_id: cred.user.uid
-                  })
-                }).then(() => {
-                  this.$router.push({
-                    name: 'Dashboard'
-                  })
-                })
-                .catch(err => {
-                  this.inputRules = [err.message]
-                })
-            }
+          this.$store.dispatch('userSignup', {
+            email: this.email,
+            password: this.password,
+            first_name: this.first_name,
+            last_name: this.last_name,
+            alias: this.alias,
+            slug: this.slug
           })
         } else {
           this.inputRules;

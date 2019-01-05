@@ -70,7 +70,6 @@
       }
     },
     created() {
-      console.log('uid', firebase.auth().currentUser.uid)
       this.$store.dispatch('setWorkouts')
     }
   }

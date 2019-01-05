@@ -105,17 +105,18 @@
         snackbar: false
       }
     },
+    computed: {
+      isAuthenticated() {
+        return this.$store.getters.isAuthenticated;
+      }
+    },
     methods: {
       logout(){
-        firebase.auth().signOut().then( () => {
-          this.$router.push({
-            name: 'Login'
-          })
-       })
+        this.$store.dispatch('userLogOut');
       }
     },
     created(){
-      // let user = firebase.auth().currentUser;
+      let user = firebase.auth().currentUser;
       firebase.auth().onAuthStateChanged( user => {
         if(user){
           this.user = user;

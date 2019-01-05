@@ -7,8 +7,6 @@
       </v-card-title>
       <v-card-text>
         <v-form class="px-3" ref="form">
-          <v-text-field label="Title" v-model="title" prepend-icon="folder" :rules="inputRules"></v-text-field>
-          <v-textarea label="Workout Details" v-model="content" prepend-icon="edit"></v-textarea>
           <v-flex xs12 sm6 md4>
             <v-dialog
               ref="dialog"
@@ -33,6 +31,9 @@
               </v-date-picker>
             </v-dialog>
           </v-flex>
+          <v-text-field label="Title" v-model="title" prepend-icon="folder" :rules="inputRules"></v-text-field>
+          <v-textarea label="Workout Details" v-model="content" prepend-icon="edit"></v-textarea>
+          
           <v-spacer></v-spacer>
           <v-btn flat class="success mx-0" @click="submit" :loading="loading">Add Workout Session</v-btn>
         </v-form>
@@ -64,17 +65,17 @@
       }
     },
     created() {
-      let ref = db.collection('users');
-      // get current user
-      ref.where('user_id', '==', firebase.auth().currentUser.uid).get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            this.user = doc.data().user_id
-            this.alias = doc.data().alias
+      if(firebase.auth().currentUser){
+        let ref = db.collection('users');
+        // get current user
+        ref.where('user_id', '==', firebase.auth().currentUser.uid).get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              this.user = doc.data().user_id
+              this.alias = doc.data().alias
+            })
           })
-        })
-
-      
+      }
     },
     methods: {
       submit() {
