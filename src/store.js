@@ -11,7 +11,8 @@ const store = new Vuex.Store({
     user: null,
     uid: null,
     isAuthenticated: null,
-    workouts: []
+    workouts: [],
+    exerciseCategory: []
   },
   getters: {
     getUser: state => {
@@ -24,7 +25,7 @@ const store = new Vuex.Store({
       return state.workouts;
     },
     isAuthenticated: state => {
-      console.log(isAuthenticated)
+      console.log(state.isAuthenticated)
       return state.user !== null && state.user !== undefined;
     }
   },
@@ -121,6 +122,12 @@ const store = new Vuex.Store({
             name: 'Login'
           });
         });
+    },
+    seed: ({ rootState }) => {
+      let exCatRef = rootState.db.collection('exercise-category');
+
+      exCatRef.add({
+      })
     }
   }
 })

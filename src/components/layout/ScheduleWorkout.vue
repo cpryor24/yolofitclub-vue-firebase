@@ -1,5 +1,6 @@
 <template>
-  <v-dialog max-width="600px" v-model="dialog">
+  <!-- <v-dialog max-width="600px" v-model="dialog"> -->
+  <v-dialog  v-model="dialog">
     <v-btn flat slot="activator" class="success">add new workout session</v-btn>
     <v-card>
       <v-card-title>

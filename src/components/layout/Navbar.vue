@@ -38,7 +38,6 @@
       <v-btn flat color="grey" v-if="user">
         <span><a @click="logout">Logout</a></span>
       </v-btn>
-      
     </v-toolbar>
 
     <v-navigation-drawer v-model="drawer" app class="primary">
@@ -47,12 +46,30 @@
           <v-avatar size="100">
             <img src="">
           </v-avatar>
-          <p class="white--text subheading mt-1">The Username</p>
+          <p class="white--text subheading mt-1">The Username{{  }}</p>
         </v-flex>
-        <v-flex class="mt-4 mb-3">
+        <!-- <v-flex class="mt-4 mb-3">
           <ScheduleWorkout @workoutAdded="snackbar = true" />
-        </v-flex>
+        </v-flex> -->
+      <!-- <v-layout row justify-center> -->
+        <v-btn color="success" dark @click="dialog = true">New Workout Session</v-btn>
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+          <v-card tile>
+            <v-toolbar card dark color="primary">
+              <v-btn icon dark @click="dialog = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+              <v-toolbar-title>Workout Session</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <ScheduleWorkoutSession @workoutAdded="snackbar = true" />
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      <!-- </v-layout> -->
       </v-layout>
+
       <v-list>
         <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
           <v-list-tile-action>
@@ -64,7 +81,7 @@
         </v-list-tile>
       </v-list>
       <!-- Personal Trainer links -->
-      <v-list>
+      <v-list v-if="!personalTrainer">
         <v-list-tile v-for="trainerLink in trainerLinks" :key="trainerLink.text" router :to="trainerLink.route">
           <v-list-tile-action>
             <v-icon class="white--text">{{ trainerLink.icon }}</v-icon>
@@ -80,15 +97,18 @@
 
 <script>
   import firebase from 'firebase';
-  import ScheduleWorkout from '@/components/layout/ScheduleWorkout';
+  // import ScheduleWorkout from '@/components/layout/ScheduleWorkout';
+  import ScheduleWorkoutSession from '@/components/layout/ScheduleWorkoutSession';
 
   export default {
     name: 'Navbar',
     components: {
-      ScheduleWorkout
+      // ScheduleWorkout,
+      ScheduleWorkoutSession
     },
     data() {
       return {
+        dialog: false,
         user: null,
         drawer: false,
         links: [
