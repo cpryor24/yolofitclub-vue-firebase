@@ -7,6 +7,7 @@ import ViewDashboard from '@/views/Dashboard';
 import Clients from '@/views/Clients';
 import BMI from '@/views/BMI';
 import Workouts from '@/views/Workouts';
+import Timeline from '@/views/MyTimeline';
 import ViewProfile from '@/views/Profile';
 import UserProfile from '@/views/MyProfile';
 import firebase from 'firebase';
@@ -61,6 +62,14 @@ const router = new Router({
     },
     {
       path: '/workouts',
+      name: 'Timeline',
+      component: Timeline,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/workouts/:id',
       name: 'Workouts',
       component: Workouts,
       meta: {

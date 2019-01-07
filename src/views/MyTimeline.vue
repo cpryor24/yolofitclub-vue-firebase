@@ -1,12 +1,13 @@
 <template>
-  <BMI />
+  <Timeline />
 </template>
 
 <script>
-  import BMI from '@/components/layout/BMI'
+  import Timeline from '@/components/layout/Timeline'
+
   export default {
     components: {
-      BMI
+      Timeline
     }
   }
 </script>

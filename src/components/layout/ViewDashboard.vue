@@ -49,8 +49,8 @@
 </template>
 
 <script>
-  import db from '@/firebase/fb';
-  import firebase from 'firebase';
+  // import db from '@/firebase/fb';
+  // import firebase from 'firebase';
 
   export default {
     name: 'ViewDashboard',

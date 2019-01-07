@@ -52,7 +52,7 @@
           <ScheduleWorkout @workoutAdded="snackbar = true" />
         </v-flex> -->
       <!-- <v-layout row justify-center> -->
-        <v-btn color="success" dark @click="multiple">New Workout Session</v-btn>
+        <v-btn color="success" dark @click="dialog = true">New Workout Session</v-btn>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
           <v-card tile>
             <v-toolbar card dark color="primary">
@@ -137,9 +137,10 @@
       },
       getExerciseCategories() {
         this.$store.dispatch('userExerciseCategories')
+        // this.$store.dispatch('filterExerciseCategories');
       },
       multiple() {
-        this.dialog = true
+        // this.dialog = true
         // console.log('getter cat', this.$store.getters.getExerciseCategories);
       }
     },
