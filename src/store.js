@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     uid: null,
     isAuthenticated: null,
     workouts: [],
-    exerciseCategory: []
+    exerciseCategories: []
   },
   getters: {
     getUser: state => {
@@ -27,6 +27,9 @@ const store = new Vuex.Store({
     isAuthenticated: state => {
       console.log(state.isAuthenticated)
       return state.user !== null && state.user !== undefined;
+    },
+    getExerciseCategories: state => {
+      return state.exerciseCategories;
     }
   },
   mutations: {
@@ -41,6 +44,9 @@ const store = new Vuex.Store({
     },
     setIsAuthenticated: (state, payload) => {
       state.isAuthenticated = payload;
+    },
+    setExerciseCategories: (state, payload) => {
+      state.exerciseCategories = payload;
     }
   },
   actions: {
@@ -128,6 +134,28 @@ const store = new Vuex.Store({
 
       exCatRef.add({
       })
+    },
+    userExerciseCategories: (context) => {
+      db.collection('exerciseCategory').get().then(snapshot => {
+        // console.log('snapshot', snapshot)
+        context.commit('setExerciseCategories', snapshot.docs.map(category => ({
+          id: category.id,
+          name: category.data()
+        })))
+        // snapshot.forEach(doc => {
+        //   let categories = [
+        //     {
+        //       id: doc.id,
+        //       name: doc.data()
+        //     }
+        //   ]
+        //   const category = context.state.exerciseCategories.push(categories)
+        //   let categories = doc.data();
+        //   categories.id = doc.id
+        //   console.log('categories in userExCat', categories)
+        //   context.commit('setExerciseCategories', categories)
+        // })
+      });
     }
   }
 })

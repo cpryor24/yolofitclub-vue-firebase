@@ -9,8 +9,8 @@
       <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link :to="{ name: 'Dashboard' }">
-          <span class="font-weight-light">Yolofit</span>
-          <span>club</span>
+          <span class="font-weight-light">Yolofitness</span>
+          <span>Club</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -52,7 +52,7 @@
           <ScheduleWorkout @workoutAdded="snackbar = true" />
         </v-flex> -->
       <!-- <v-layout row justify-center> -->
-        <v-btn color="success" dark @click="dialog = true">New Workout Session</v-btn>
+        <v-btn color="success" dark @click="multiple">New Workout Session</v-btn>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
           <v-card tile>
             <v-toolbar card dark color="primary">
@@ -128,18 +128,29 @@
     computed: {
       isAuthenticated() {
         return this.$store.getters.isAuthenticated;
-      }
+      },
+      
     },
     methods: {
       logout(){
         this.$store.dispatch('userLogOut');
+      },
+      getExerciseCategories() {
+        this.$store.dispatch('userExerciseCategories')
+      },
+      multiple() {
+        this.dialog = true
+        // console.log('getter cat', this.$store.getters.getExerciseCategories);
       }
     },
     created(){
       let user = firebase.auth().currentUser;
+      // console.log('created', user)
       firebase.auth().onAuthStateChanged( user => {
         if(user){
           this.user = user;
+          // console.log('user', user)
+          this.getExerciseCategories()
         } else {
           this.user = null;
         }
