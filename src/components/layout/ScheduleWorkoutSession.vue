@@ -17,25 +17,29 @@
                   <v-expansion-panel-content  v-for="(exercise, index) in exerciseCategory.workout" :key="index">
                     <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
                     <div slot="header" x>{{ exercise.name }}</div>
-                      <v-card >
-                        <v-card-text>
-                          <div class="title mb-1">Images</div>
-                          <v-layout justify-space-around >
-                            <div v-for="(image, i) in exercise.images" :key="i"></div>
-                            <v-flex xs12 ms4>
-                              <v-layout column>
-                                <v-img :src=image aspect-ratio="2" max-height="350px" max-width="350px" class="mb-2" contain v-for="(image, i) in exercise.images" :key="i"></v-img>
-                              </v-layout>
-                            </v-flex>
-                          </v-layout>
-                          <h2>Instructions</h2>
-                          <ol>
-                            <li v-for="(instruction, i) in exercise.instructions" :key="i">{{ instruction }}</li>
-                          </ol>
-                          <v-divider></v-divider>
-                          <v-btn flat class="success mx-0">Add Exercise</v-btn>
-                        </v-card-text>
-                      </v-card>
+                    <v-card >
+                      <v-card-text>
+                        <div class="title mb-1">Images</div>
+                        <v-layout justify-space-around >
+                          <div v-for="(image, i) in exercise.images" :key="i"></div>
+                          <v-flex xs12 ms4>
+                            <v-layout column>
+                              <v-img :src=image aspect-ratio="2" max-height="350px" max-width="350px" class="mb-2" contain v-for="(image, i) in exercise.images" :key="i"></v-img>
+                            </v-layout>
+                          </v-flex>
+                        </v-layout>
+                        <h2>Instructions</h2>
+                        <ol>
+                          <li v-for="(instruction, i) in exercise.instructions" :key="i">{{ instruction }}</li>
+                        </ol>
+                        <v-divider></v-divider>
+                        <v-spacer></v-spacer>
+                        <v-container fluid>
+                          <p>Please select your exercises for this workout session: {{ selectedExercises }}</p>
+                          <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise.name"></v-switch>
+                        </v-container>
+                      </v-card-text>
+                    </v-card>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-flex>
@@ -47,7 +51,7 @@
     <v-spacer></v-spacer>
     <v-form class="px-3" ref="form">
       <v-flex xs12 sm6 md4>
-        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent lazy full-width width="290px">
+        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent lazy full-width width="290px" :rules="dateRules">
           <v-text-field slot="activator" v-model="date" label="Completion date" prepend-icon="event" readonly></v-text-field>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
@@ -59,9 +63,8 @@
       <v-text-field label="Title" v-model="title" prepend-icon="folder" :rules="inputRules"></v-text-field>
       <v-textarea label="Workout Details" v-model="content" prepend-icon="edit"></v-textarea>
       <v-container fluid>
-        <p>Exercises currently selected for this workout session: {{ selectedExercises }}</p>
-        <v-switch v-model="selectedExercises" label="Dumbbell Bench Press" value="Dumbbell Bench Press"></v-switch>
-        <v-switch v-model="selectedExercises" label="Abs" value="Abs"></v-switch>
+        <p>List of exercises for this workout session: {{ selectedExercises }}</p>
+        <!-- <v-switch v-model="selectedExercises" label="Dumbbell Bench Press" value="Dumbbell Bench Press"></v-switch> -->
       </v-container>
       <v-spacer></v-spacer>
       <v-btn flat class="success mx-0" @click="submit" :loading="loading">Add Workout Session</v-btn>
@@ -86,6 +89,9 @@
         user: null,
         alias: null,
         inputRules: [
+          v => !!v || 'This field is required'
+        ],
+        dateRules: [
           v => !!v || 'This field is required'
         ],
         currentItem: 'tab-Abductors',
@@ -124,15 +130,20 @@
             date: this.date,
             alias: this.alias,
             user_id: this.user,
-            status: this.status
+            selectedExercises: this.selectedExercises,
+            status: this.status,
+            createdAt: moment(new Date()).format('l'),
+            updatedAt: null
           }
 
-          db.collection('workouts').add(workout).then(() => {
-            this.loading = false;
-            this.dialog = false;
-            this.$refs.form.reset();
-            this.$emit('workoutAdded')
-          })
+          this.$store.dispatch('addWorkoutSession', workout);
+          this.loading = false;
+          this.dialog = false;
+          this.selectedExercises = [];
+          this.$refs.form.reset();
+        } else {
+          this.inputRules,
+          this.dateRules
         }
       },
       randomNumbers() {

@@ -22,7 +22,7 @@
 
 <script>
   import slugify from 'slugify';
-  import db from '@/firebase/fb';
+  // import db from '@/firebase/fb';
   import firebase from 'firebase';
 
   export default {
@@ -35,6 +35,7 @@
         last_name: null,
         alias: null,
         isAdmin: false,
+        userRole: 'user',
         isPersonalTrainer: false,
         emailRules: [
           v => !!v || 'E-mail is required',
@@ -71,7 +72,8 @@
             alias: this.alias,
             slug: this.slug,
             isAdmin: this.isAdmin,
-            isPersonalTrainer: this.isPersonalTrainer
+            userRole: this.userRole,
+            isPersonalTrainer: this.isPersonalTrainer,
           })
         } else {
           this.inputRules;

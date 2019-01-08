@@ -23,6 +23,7 @@
 
       <v-card flat v-for="workout in workouts" :key="workout.id">
         <v-layout row wrap :class="`pa-3 workout ${workout.status}`">
+          
           <v-flex xs12 md6>
             <div class="caption grey--text">Workout Title</div>
             <div>{{ workout.title}}</div>
@@ -40,6 +41,8 @@
               <v-chip small :class="`${workout.status} white--text caption my-2`">{{ workout.status }}</v-chip>
             </div>
           </v-flex>
+          <v-icon v-if="workout.status != 'complete'" @click="deleteWorkoutSession(workout.id)" small class="delete">delete</v-icon>
+          
         </v-layout>
         <v-divider></v-divider>
       </v-card>
@@ -67,6 +70,10 @@
     methods: {
       sortBy(prop) {
         this.workouts.sort( (a, b) => a[prop] < b[prop] ? -1 : 1)
+      },
+      deleteWorkoutSession(id) {
+        this.$store.dispatch('deleteWorkoutSession', id)
+        
       }
     },
     created() {
@@ -100,6 +107,15 @@
 
   .v-chip.overdue {
     background: #f83e70;
+  }
+
+  .workout .delete {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 1.4em;
   }
 
 </style>

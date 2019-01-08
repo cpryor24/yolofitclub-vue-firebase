@@ -15,7 +15,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-menu offset-y v-if="user">
+      <!-- <v-menu offset-y v-if="user">
         <v-btn flat slot="activator" color="red">
           <v-icon left>expand_more</v-icon>
           <span>Menu</span>
@@ -25,7 +25,7 @@
             <v-list-tile-title>{{ link.text }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-menu>
+      </v-menu> -->
       <v-btn flat color="grey" v-if="!user">
         <span><router-link :to="{ name: 'Signup' }">Signup</router-link></span>
       </v-btn>
@@ -46,7 +46,7 @@
           <v-avatar size="100">
             <img src="">
           </v-avatar>
-          <p class="white--text subheading mt-1">The Username{{  }}</p>
+          <p class="white--text subheading mt-1" v-if="user">{{ user.email }}</p>
         </v-flex>
         <!-- <v-flex class="mt-4 mb-3">
           <ScheduleWorkout @workoutAdded="snackbar = true" />
@@ -166,7 +166,7 @@
     },
     created(){
       let user = firebase.auth().currentUser;
-      // console.log('created', user)
+      console.log('created', user)
       firebase.auth().onAuthStateChanged( user => {
         if(user){
           this.user = user;

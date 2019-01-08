@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     uid: null,
     isAuthenticated: null,
     workouts: [],
-    exerciseCategories: []
+    exerciseCategories: [],
+    workoutSession: []
   },
   getters: {
     getUser: state => {
@@ -30,11 +31,14 @@ const store = new Vuex.Store({
     },
     getExerciseCategories: state => {
       return state.exerciseCategories;
+    },
+    getWorkoutSession: state => {
+      return state.workoutSession;
     }
   },
   mutations: {
     setUser: (state, payload) => {
-      state.user = firebase.auth().currentUser;
+      state.user = payload;
     },
     setUserId: state => {
       state.uid = firebase.auth().currentUser.uid;
@@ -47,11 +51,14 @@ const store = new Vuex.Store({
     },
     setExerciseCategories: (state, payload) => {
       state.exerciseCategories = payload;
+    },
+    setWorkoutSession: (state, payload) => {
+      state.workoutSession = payload;
     }
   },
   actions: {
     setUserAction: context => {
-      context.commit('setUser');
+      context.commit('setUser', firebase.auth().currentUser);
     },
     setUserIdAction: context => {
       context.commit('setUserId');
@@ -65,11 +72,11 @@ const store = new Vuex.Store({
         })));
       })
     },
-    userSignup: (context, email, password, first_name, lastname, alias, slug) => {
+    userSignup: (context, email) => {
       let ref = db.collection('users').doc(email.slug);
       ref.get().then(doc => {
         if(doc.exists){
-
+          email.aliasRules
         } else {
           firebase
             .auth()
@@ -81,6 +88,7 @@ const store = new Vuex.Store({
                 last_name: email.last_name,
                 isAdmin: email.isAdmin,
                 isPersonalTrainer: email.isPersonalTrainer,
+                userRole: email.userRole,
                 geolocation: null,
                 user_id: cred.user.uid
               })
@@ -97,7 +105,7 @@ const store = new Vuex.Store({
         }
       })
     },
-    userLogin: (context, email, password) => {
+    userLogin: (context, email) => {
       firebase
         .auth()
         .signInWithEmailAndPassword(email.email, email.password)
@@ -126,7 +134,7 @@ const store = new Vuex.Store({
         .catch(() => {
           context.commit('setUser', null);
           context.commit('setIsAuthenticated', false);
-          rrouter.push({
+          router.push({
             name: 'Login'
           });
         });
@@ -141,6 +149,25 @@ const store = new Vuex.Store({
         })
         context.commit('setExerciseCategories', category)
       })
+    },
+    addWorkoutSession: (context, workout) => {
+      db.collection('workouts').add(workout).then(() => {
+        context.commit('setWorkoutSession', workout);
+        router.push({
+          name: 'Timeline'
+        })
+      })
+    },
+    deleteWorkoutSession: (context, id) => {
+      console.log('workout session id', id)
+      console.log('state', context.state.workouts)
+      db.collection('workouts').doc(id).delete().then(() => {
+        context.commit('setWorkoutSession', context.state.workouts.filter(workout => workout.id != id))
+        router.push({
+          name: 'Timeline'
+        })
+      })
+      console.log('state afterwards', context.state.workouts)
     }
   }
 })

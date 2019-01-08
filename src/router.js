@@ -5,7 +5,7 @@ import Signup from '@/components/auth/Signup';
 import Login from '@/components/auth/Login';
 import ViewDashboard from '@/views/Dashboard';
 import Clients from '@/views/Clients';
-import Workouts from '@/views/Workouts';
+import Workout from '@/views/Workout';
 import Timeline from '@/views/MyTimeline';
 import ViewProfile from '@/views/Profile';
 import UserProfile from '@/views/MyProfile';
@@ -61,8 +61,8 @@ const router = new Router({
     },
     {
       path: '/workouts/:id',
-      name: 'Workouts',
-      component: Workouts,
+      name: 'Workout',
+      component: Workout,
       meta: {
         requiresAuth: true
       }

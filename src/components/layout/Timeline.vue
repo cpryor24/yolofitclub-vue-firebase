@@ -18,12 +18,17 @@
       >
         <v-card-title class="title">{{ workout.title }}</v-card-title>
         <v-card-text class="white text--primary">
-          <p>{{ workout.content }}</p>
+          <div v-if="workout.content != ''">
+            <p>{{ workout.content }}</p>
+          </div>
+          <ul v-for="(exercise, index) in workout.selectedExercises" :key="index">
+            <li>{{ exercise }}</li>
+          </ul>
           <v-btn
             color="green"
             class="mx-0"
             outline
-            @click="startWorkout"
+            @click="startWorkout(workout.id)"
           >
             Start Workout
           </v-btn>
@@ -41,8 +46,11 @@
       }
     },
     methods: {
-      startWorkout() {
-        
+      startWorkout(id) {
+        console.log('id', id)
+        router.push({
+          name: 'Workout'
+        })
       }
     },
     computed: {
