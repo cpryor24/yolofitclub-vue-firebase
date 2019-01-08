@@ -161,7 +161,7 @@ const store = new Vuex.Store({
           snapshot.forEach(doc => {
             let categories = doc.data();
             categories.id = doc.id;
-            cat.push(categories)
+            category.push(categories)
           })
           context.commit('setExerciseCategories', category)
 
