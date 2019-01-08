@@ -34,6 +34,8 @@
         first_name: null,
         last_name: null,
         alias: null,
+        isAdmin: false,
+        isPersonalTrainer: false,
         emailRules: [
           v => !!v || 'E-mail is required',
           v => /.+@.+/.test(v) || 'E-mail must be valid'
@@ -67,7 +69,9 @@
             first_name: this.first_name,
             last_name: this.last_name,
             alias: this.alias,
-            slug: this.slug
+            slug: this.slug,
+            isAdmin: this.isAdmin,
+            isPersonalTrainer: this.isPersonalTrainer
           })
         } else {
           this.inputRules;

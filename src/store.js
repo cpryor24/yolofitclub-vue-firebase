@@ -79,6 +79,8 @@ const store = new Vuex.Store({
                 alias: email.alias,
                 first_name: email.first_name,
                 last_name: email.last_name,
+                isAdmin: email.isAdmin,
+                isPersonalTrainer: email.isPersonalTrainer,
                 geolocation: null,
                 user_id: cred.user.uid
               })
