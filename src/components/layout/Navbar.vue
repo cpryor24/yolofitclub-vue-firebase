@@ -70,7 +70,7 @@
       <!-- </v-layout> -->
       </v-layout>
 
-      <v-list>
+      <v-list >
         <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
           <v-list-tile-action>
             <v-icon class="white--text">{{ link.icon }}</v-icon>
@@ -79,9 +79,31 @@
             <v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-dialog v-model="dialog2" persistent max-width="320" center>
+        <v-list-tile class="warning darken-1" align-center>
+          <v-list-tile-action>
+            <v-icon class="white--text">nature_people</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title   class="white--text">Body Mass Index (BMI)</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-btn slot="activator" flat dark py-0><v-icon class="white--text" left>nature_people</v-icon> Body Mass Index (BMI)</v-btn>
+        <v-card>
+          <v-card-text>
+            <iframe src="https://www.weightlossagents.com/tools/bmi_calculator?s=300x250" scrolling="no" border="0" frameborder="0" width="300" height="250"></iframe>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="warning darken-1" flat @click="dialog2 = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       </v-list>
       <!-- Personal Trainer links -->
-      <v-list v-if="!personalTrainer">
+      <v-list v-if="personalTrainer">
         <v-list-tile v-for="trainerLink in trainerLinks" :key="trainerLink.text" router :to="trainerLink.route">
           <v-list-tile-action>
             <v-icon class="white--text">{{ trainerLink.icon }}</v-icon>
@@ -97,26 +119,24 @@
 
 <script>
   import firebase from 'firebase';
-  // import ScheduleWorkout from '@/components/layout/ScheduleWorkout';
   import ScheduleWorkoutSession from '@/components/layout/ScheduleWorkoutSession';
 
   export default {
     name: 'Navbar',
     components: {
-      // ScheduleWorkout,
       ScheduleWorkoutSession
     },
     data() {
       return {
         dialog: false,
+        dialog2: false,
         user: null,
         drawer: false,
         links: [
           { icon: 'dashboard', text: 'Dashboard', route: '/'},
-          { icon: 'fitness_center', text: 'My Workouts', route: '/workouts'},
-          { icon: 'account_box', text: 'My Profile', route: '/profile'},
           { icon: 'place', text: 'Map', route: '/gmap'},
-          { icon: 'nature_people', text: 'Body Mass Index (BMI)', route: '/bmi'},
+          { icon: 'account_box', text: 'My Profile', route: '/profile'},
+          { icon: 'fitness_center', text: 'My Workouts', route: '/workouts'},
         ],
         personalTrainer: false,
         trainerLinks: [

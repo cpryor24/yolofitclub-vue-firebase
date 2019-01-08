@@ -129,44 +129,16 @@ const store = new Vuex.Store({
           });
         });
     },
-    seed: ({ rootState }) => {
-      let exCatRef = rootState.db.collection('exercise-category');
-
-      exCatRef.add({
-      })
-    },
     userExerciseCategories: (context) => {
-      // db.collection('exerciseCategory').get().then(snapshot => {
-      //   console.log('snapshot', snapshot)
-      //   context.commit('setExerciseCategories', snapshot.docs.map(category => ({
-      //     id: category.id,
-      //     name: category.data()
-      //   })))
-        // snapshot.forEach(doc => {
-        //   let categories = [
-        //     {
-        //       id: doc.id,
-        //       name: doc.data()
-        //     }
-        //   ]
-        //   const category = context.state.exerciseCategories.push(categories)
-        //   let categories = doc.data();
-        //   categories.id = doc.id
-        //   console.log('categories in userExCat', categories)
-        //   context.commit('setExerciseCategories', categories)
-        // })
-
-        db.collection('exerciseCategory').get().then(snapshot => {
-          let category = []
-          snapshot.forEach(doc => {
-            let categories = doc.data();
-            categories.id = doc.id;
-            category.push(categories)
-          })
-          context.commit('setExerciseCategories', category)
-
-        // })
-      });
+      db.collection('exerciseCategory').get().then(snapshot => {
+        let category = []
+        snapshot.forEach(doc => {
+          let categories = doc.data();
+          categories.id = doc.id;
+          category.push(categories);
+        })
+        context.commit('setExerciseCategories', category)
+      })
     }
   }
 })

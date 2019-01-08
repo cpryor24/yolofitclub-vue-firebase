@@ -5,7 +5,6 @@ import Signup from '@/components/auth/Signup';
 import Login from '@/components/auth/Login';
 import ViewDashboard from '@/views/Dashboard';
 import Clients from '@/views/Clients';
-import BMI from '@/views/BMI';
 import Workouts from '@/views/Workouts';
 import Timeline from '@/views/MyTimeline';
 import ViewProfile from '@/views/Profile';
@@ -43,14 +42,6 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
-      path: '/bmi',
-      name: 'BMI',
-      component: BMI,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/clients',

@@ -24,7 +24,7 @@
                             <div v-for="(image, i) in exercise.images" :key="i"></div>
                             <v-flex xs12 ms4>
                               <v-layout column>
-                                <v-img src="" aspect-ratio="2" contain>{{ exercise.image }}</v-img>
+                                <v-img :src=image aspect-ratio="2" max-height="350px" max-width="350px" class="mb-2" contain v-for="(image, i) in exercise.images" :key="i"></v-img>
                               </v-layout>
                             </v-flex>
                           </v-layout>
@@ -32,6 +32,8 @@
                           <ol>
                             <li v-for="(instruction, i) in exercise.instructions" :key="i">{{ instruction }}</li>
                           </ol>
+                          <v-divider></v-divider>
+                          <v-btn flat class="success mx-0">Add Exercise</v-btn>
                         </v-card-text>
                       </v-card>
                   </v-expansion-panel-content>
@@ -138,6 +140,9 @@
       },
       tabFilter(exercises) {
         return exercises.filter(exercise => 'tab-' + exercise.id == this.currentItem)
+      },
+      userSelectedExercises() {
+        this.$store.dispatch('setExercises')
       }
     },
     computed: {
