@@ -52,7 +52,7 @@
         // this.$router.push({
         //   name: 'Workout'
         // })
-        // this.$store.dispatch('startWorkoutSession', id)
+        this.$store.dispatch('startWorkoutSession', id)
       }
     },
     computed: {
@@ -62,7 +62,6 @@
       }
     },
     created() {
-      console.log('route timeline', this.$route.params.timeline)
       this.$store.dispatch('setWorkouts')
     }
     

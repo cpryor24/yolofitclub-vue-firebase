@@ -105,12 +105,17 @@
       }
     },
     computed: {
-      // session() {
-      //   return this.$store.getters.getWorkoutSession;
-      // }
+      session() {
+        return this.$store.getters.getWorkoutSession;
+      },
+      showExerciseCategories() {
+        return this.$store.getters.getExerciseCategories;
+      }
     },
     created() {
       console.log('route', this.$route.params.id)
+      console.log('session', this.$store.getters.getWorkoutSession)
+      console.log('show', this.$store.getters.getExerciseCategories)
     }
   }
 </script>
