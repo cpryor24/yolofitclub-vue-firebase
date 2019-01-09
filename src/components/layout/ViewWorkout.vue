@@ -21,24 +21,25 @@
                   <v-card-actions>
                     <v-form class="px-1" ref="form">
                       <!-- <v-flex> -->
-                        <div class="new-row px-2">
+                        <div class="new-row px-2 ">
                           <span v-for="(rep, index) in exerciseReps" :key="index">
                             <v-text-field class="new-fields" label="Reps" v-model="exerciseReps[index]" :rules="repsRules"></v-text-field>
                           </span>
-                          <span v-for="(weight, ind) in exerciseWeight" :key="ind">
-                            <v-text-field  class="new-fields" label="Weight" v-model="exerciseWeight[ind]" :rules="weightRules"></v-text-field>
-                          </span>
+                          <span v-for="(weight, ind) in exerciseWeight" :key="ind" class="field-delete">
+                            <v-text-field  class="new-fields " label="Weight" v-model="exerciseWeight[ind]" :rules="weightRules"></v-text-field>
+                          </span >
                           <v-icon v-if="exerciseReps != [] && exerciseWeight != []" @click="deleteRepWeight(rep, weight)" small class="delete">delete</v-icon>
                         </div>
                         <div class="new-row px-2">
                           <v-text-field class="new-fields" label="Reps" v-model="reps" :rules="repsRules"></v-text-field>
                           <v-text-field  class="new-fields" label="Weight" v-model="weight" :rules="weightRules"></v-text-field>
-                          <v-btn flat small dark class="success mx-0 add-btn" @click="addRow" ><v-icon>add</v-icon></v-btn>
+                          <v-btn flat fab small dark class="success mx-0 add-btn" @click="addRow" ><v-icon>add</v-icon></v-btn>
                         </div>
                       <!-- </v-flex> -->
                       <v-divider></v-divider>
                       <v-spacer></v-spacer>
                       <div class="my-2">
+                        <!-- {{ this.$route.params.id}} -->
                         <v-btn flat small center class="success mx-0 " @click="addExercise()" :loading="loading">Complete</v-btn>
                       </div>
                     </v-form>
@@ -107,6 +108,9 @@
       // session() {
       //   return this.$store.getters.getWorkoutSession;
       // }
+    },
+    created() {
+      console.log('route', this.$route.params.id)
     }
   }
 </script>
@@ -128,10 +132,6 @@
     margin: 20px auto;
   }
 
-  /* .add-workout .field {
-    margin: 20px auto;
-  } */
-
   .new-row .new-fields{
     width: 70px;
     margin-right: 40px;
@@ -140,6 +140,19 @@
 
   .add-btn {
     width: 20px;
+  }
+
+  .add-workout .field-delete {
+    position: relative;
+  }
+
+  .add-workout .delete {
+    /* position: absolute;
+    right: 0;
+    bottom: 16px; */
+    color: #aaa;
+    font-size: 1.4em;
+    cursor: pointer;
   }
 
 </style>

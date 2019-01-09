@@ -28,9 +28,8 @@
             color="green"
             class="mx-0"
             outline
-            
+            @click="startWorkout(workout.id)"
           >
-          <!-- @click="startWorkout(workout.id)" -->
             Start Workout
           </v-btn>
         </v-card-text>
@@ -47,20 +46,23 @@
       }
     },
     methods: {
-      // startWorkout(id) {
-      //   console.log('id', id)
-      //   this.$router.push({
-      //     name: 'Workout'
-      //   })
-      //   this.$store.dispatch('startWorkoutSession', id)
-      // }
+      startWorkout(id) {
+        console.log('id', id)
+        console.log(this.$route.params.id)
+        // this.$router.push({
+        //   name: 'Workout'
+        // })
+        // this.$store.dispatch('startWorkoutSession', id)
+      }
     },
     computed: {
       workouts() {
+        
         return this.$store.getters.getWorkouts;
       }
     },
     created() {
+      console.log('route timeline', this.$route.params.timeline)
       this.$store.dispatch('setWorkouts')
     }
     

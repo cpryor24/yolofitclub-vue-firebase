@@ -41,6 +41,21 @@
               <v-chip small :class="`${workout.status} white--text caption my-2`">{{ workout.status }}</v-chip>
             </div>
           </v-flex>
+          <v-btn color="info edit" small fab dark @click="multiple(workout.id)"><v-icon>edit</v-icon></v-btn>
+          <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+          <v-card tile>
+            <v-toolbar card dark color="primary">
+              <v-btn icon dark @click="dialog = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+              <v-toolbar-title>Workout Session</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <EditScheduleWorkoutSession @workoutAdded="snackbar = true" />
+            </v-card-text>
+          </v-card>
+        </v-dialog>
           <v-icon v-if="workout.status != 'complete'" @click="deleteWorkoutSession(workout.id)" small class="delete">delete</v-icon>
           
         </v-layout>
@@ -52,14 +67,19 @@
 </template>
 
 <script>
-  // import db from '@/firebase/fb';
-  // import firebase from 'firebase';
+  import db from '@/firebase/fb';
+  import firebase from 'firebase';
+  import EditScheduleWorkoutSession from '@/components/layout/EditScheduleWorkoutSession';
 
   export default {
+    
     name: 'ViewDashboard',
+    components: {
+      EditScheduleWorkoutSession
+    },
     data() {
       return {
-       
+        dialog: false,
       }
     },
     computed: {
@@ -73,7 +93,10 @@
       },
       deleteWorkoutSession(id) {
         this.$store.dispatch('deleteWorkoutSession', id)
-        
+      },
+      multiple(id) {
+        this.dialog = true;
+        this.$store.dispatch('editWorkoutSession', id);
       }
     },
     created() {

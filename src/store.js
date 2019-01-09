@@ -168,6 +168,16 @@ const store = new Vuex.Store({
         })
       })
       console.log('state afterwards', context.state.workouts)
+    },
+    editWorkoutSession: (context, id) => {
+      let ref = db.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
+        ref.get().then(snapshot => {
+          snapshot.forEach(doc => {
+            let workout = doc.data();
+            workout.id = doc.id;
+            context.commit('setWorkoutSession', workout)
+          })
+        })
     }
     // startWorkoutSession: (context, id) => {
     //   console.log('start workout session id', id)
