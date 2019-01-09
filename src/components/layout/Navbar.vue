@@ -9,8 +9,8 @@
       <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link :to="{ name: 'Dashboard' }">
-          <span class="font-weight-light">Yolofitness</span>
-          <span>Club</span>
+          <span class="font-weight-light">Yolo Fitness</span>
+          <span> Club</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>

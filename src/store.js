@@ -169,6 +169,13 @@ const store = new Vuex.Store({
       })
       console.log('state afterwards', context.state.workouts)
     }
+    // startWorkoutSession: (context, id) => {
+    //   console.log('start workout session id', id)
+    //   db.collection('workouts').doc(id).update().then(() => {
+    //     reps = null,
+    //     weight = null,
+    //     time = null
+    // }
   }
 })
 
