@@ -83,6 +83,7 @@
         title: '',
         content: '',
         date: null,
+        dialog: false,
         modal: false,
         loading: false,
         status: null,
@@ -134,14 +135,15 @@
             status: this.status,
             createdAt: moment(new Date()).format('l'),
             updatedAt: null,
-
           }
 
           this.$store.dispatch('addWorkoutSession', workout);
           this.loading = false;
           this.dialog = false;
           this.selectedExercises = [];
+          console.log('selectedExercise should be empty to turn off switch for each exercise', this.selectedExercises)
           this.$refs.form.reset();
+          this.$emit('workoutAdded')
         } else {
           this.inputRules,
           this.dateRules

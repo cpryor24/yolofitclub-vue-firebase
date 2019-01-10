@@ -9,8 +9,8 @@
       <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link :to="{ name: 'Dashboard' }">
-          <span class="font-weight-light">Yolo Fitness</span>
-          <span> Club</span>
+          <span class="font-weight-light">iTalk</span>
+          <span> Fitness</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -135,7 +135,7 @@
         links: [
           { icon: 'dashboard', text: 'Dashboard', route: '/'},
           { icon: 'place', text: 'Map', route: '/gmap'},
-          { icon: 'account_box', text: 'My Profile', route: '/profile'},
+          { icon: 'account_box', text: 'My Profile', route: '/myprofile'},
           { icon: 'fitness_center', text: 'My Workouts', route: '/workouts'},
         ],
         personalTrainer: false,
@@ -157,12 +157,7 @@
       },
       getExerciseCategories() {
         this.$store.dispatch('userExerciseCategories')
-        // this.$store.dispatch('filterExerciseCategories');
       },
-      multiple() {
-        // this.dialog = true
-        // console.log('getter cat', this.$store.getters.getExerciseCategories);
-      }
     },
     created(){
       let user = firebase.auth().currentUser;

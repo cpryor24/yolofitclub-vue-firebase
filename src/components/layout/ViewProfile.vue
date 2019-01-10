@@ -1,27 +1,33 @@
 <template>
-  <div class="view-profile container">
-    <div v-if="profile" class="card">
-      <h2 class="center">{{ profile.alias }}'s Wall</h2>
-      <v-card class="view-profile" center>
-        <v-card-text>
-          <v-form class="px-3 login" ref="form">
-            <v-text-field class="mb-3" v-model="newComment" label="Add a comment" :rules="inputRules"></v-text-field>
-            <v-btn flat class="success mx-0" @click.prevent="addComment">Add Comment</v-btn>
-          </v-form>
-        </v-card-text>
-      </v-card>
-      <ul class="comments collection">
-        <li v-for="(comment, index) in comments" :key="index">
-          <div class="deep-purple-text">{{ comment.from }}</div>
-          <div class="grey-text text-darken-2">{{ comment.content }}</div>
-        </li>
-      </ul>
-    </div>
+  <div v-if="user" class="view-profile container">
+     <v-container style="max-width: 600px;">
+      <h2 class="center" >{{ profile.alias }}'s Wall</h2>
+      <v-timeline v-if="profile" dense clipped>
+        <v-timeline-item fill-dot class="white--text mb-5" color="orange" large>
+          <span slot="icon">{{ profile.alias }}</span>
+          <v-text-field v-model="newComment" hide-details flat label="Leave a comment..." solo @keydown.enter="addComment">
+            <template slot="append">
+              <v-btn class="mx-0" depressed @click="addComment"> Post</v-btn>
+            </template>
+          </v-text-field>
+        </v-timeline-item>
+        <v-slide-x-transition group>
+          <v-timeline-item  v-for="(comment, index) in comments" :key="index" class="mb-3" color="primary" small>
+            <v-layout justify-space-between>
+              <v-flex xs6 v-text=" comment.content "></v-flex>
+              <v-flex xs2 text-xs-right v-text="formattedTime(comment.time) "></v-flex>
+              <v-flex xs4 text-xs-right v-text=" comment.from "></v-flex>
+            </v-layout>
+          </v-timeline-item>
+        </v-slide-x-transition>
+      </v-timeline>
+    </v-container>
   </div>
 </template>
 <script>
   import db from '@/firebase/fb';
   import firebase from 'firebase';
+  import moment from 'moment';
 
   export default {
     name: 'ViewProfile',
@@ -57,7 +63,8 @@
             if(change.type == 'added'){
               this.comments.unshift({
                 from: change.doc.data().from,
-                content: change.doc.data().content
+                content: change.doc.data().content,
+                time: change.doc.data().time
               })
             }
           })
@@ -67,6 +74,7 @@
       addComment() {
         if(this.newComment){
           this.inputRules = [];
+          
           db.collection('comments').add({
             to: this.$route.params.id,
             from: this.user.alias,
@@ -78,26 +86,16 @@
         } else {
           this.inputRules = ['You must enter a comment to submit']
         }
+      },
+      formattedTime(time) {
+        return moment(time).format('ll')
       }
+    },
+    computed: {
+      timeline () {
+        return this.events.slice().reverse()
+      },
+      
     }
   }
 </script>
-
-<style scoped>
-  .view-profile .card {
-    padding: 20px;
-    margin-top: 40px;
-  }
-
-  .view-profile h2 {
-    font-size: 2em;
-    margin-top: 0;
-  }
-
-  .view-profile li {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-  }
-</style>
-
-

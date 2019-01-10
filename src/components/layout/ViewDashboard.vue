@@ -7,17 +7,17 @@
         <v-tooltip top>
           <v-btn small flat right color="grey" @click="sortBy('title')" slot="activator">
             <v-icon left small>folder</v-icon>
-            <span class="caption text-lowercase">By workout name</span>
+            <span class="caption text-lowercase">By workout title</span>
           </v-btn>
-          <span>Sort workouts by workout name</span>
+          <span>Sort workouts by title</span>
         </v-tooltip>
 
         <v-tooltip top>
-          <v-btn small flat right color="grey" @click="sortBy('date')" slot="activator">
-            <v-icon left small>person</v-icon>
-            <span class="caption text-lowercase">By Date</span>
+          <v-btn small flat right color="grey" @click="sortBy('status')" slot="activator">
+            <v-icon left small>alarm</v-icon>
+            <span class="caption text-lowercase">By status</span>
           </v-btn>
-          <span>Sort by person name</span>
+          <span>Sort by status</span>
         </v-tooltip>
       </v-layout>
 
