@@ -18,8 +18,6 @@
 </template>
 <script>
   import firebase from 'firebase';
-  
-
   export default {
     name: 'Login',
     data(){
@@ -40,7 +38,6 @@
     },
     methods: {
       login() {
-        console.log(this.email, this.password)
         if(this.$refs.form.validate()){
           this.$store.dispatch('userLogin', {
             email: this.email,

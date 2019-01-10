@@ -13,7 +13,8 @@ const store = new Vuex.Store({
     isAuthenticated: null,
     workouts: [],
     exerciseCategories: [],
-    workoutSession: []
+    workoutSession: [],
+    exercise: []
   },
   getters: {
     getUser: state => {
@@ -34,6 +35,9 @@ const store = new Vuex.Store({
     },
     getWorkoutSession: state => {
       return state.workoutSession;
+    },
+    getExercise: state => {
+      return state.exercise;
     }
   },
   mutations: {
@@ -54,6 +58,9 @@ const store = new Vuex.Store({
     },
     setWorkoutSession: (state, payload) => {
       state.workoutSession = payload;
+    },
+    setExercise: (state, payload) => {
+      state.exercise = payload;
     }
   },
   actions: {
@@ -159,15 +166,12 @@ const store = new Vuex.Store({
       })
     },
     deleteWorkoutSession: (context, id) => {
-      console.log('workout session id', id)
-      console.log('state', context.state.workouts)
       db.collection('workouts').doc(id).delete().then(() => {
         context.commit('setWorkoutSession', context.state.workouts.filter(workout => workout.id != id))
         router.push({
           name: 'Timeline'
         })
       })
-      console.log('state afterwards', context.state.workouts)
     },
     editWorkoutSession: (context, id) => {
       let ref = db.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
@@ -189,6 +193,20 @@ const store = new Vuex.Store({
           router.push(`workouts/${id}`);
         })
       })
+    },
+    completeExercise: (context, name) => {
+      let id = name.params;
+      let path = name.name;
+      let ref = db.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
+      ref.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          context.commit('setExercise', doc.data().selectedExercises.filter(exercise => exercise.name == path)[0] )
+          router.push(`${id}/${path}`);
+        })
+      })
+    },
+    finishExercise: (context, submittedExercise) => {
+      // let ref = doc.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
     }
   }
 })

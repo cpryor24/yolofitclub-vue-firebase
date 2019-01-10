@@ -35,8 +35,8 @@
                         <v-divider></v-divider>
                         <v-spacer></v-spacer>
                         <v-container fluid>
-                          <p>Please select your exercises for this workout session: {{ selectedExercises }}</p>
-                          <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise.name"></v-switch>
+                          <p v-if="selectedExercises != []">Please select your exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
+                          <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise"></v-switch>
                         </v-container>
                       </v-card-text>
                     </v-card>
@@ -63,7 +63,7 @@
       <v-text-field label="Title" v-model="title" prepend-icon="folder" :rules="inputRules"></v-text-field>
       <v-textarea label="Workout Details" v-model="content" prepend-icon="edit"></v-textarea>
       <v-container fluid>
-        <p>List of exercises for this workout session: {{ selectedExercises }}</p>
+        <p v-if="selectedExercises != []">List of exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
         <!-- <v-switch v-model="selectedExercises" label="Dumbbell Bench Press" value="Dumbbell Bench Press"></v-switch> -->
       </v-container>
       <v-spacer></v-spacer>
@@ -133,7 +133,8 @@
             selectedExercises: this.selectedExercises,
             status: this.status,
             createdAt: moment(new Date()).format('l'),
-            updatedAt: null
+            updatedAt: null,
+
           }
 
           this.$store.dispatch('addWorkoutSession', workout);
@@ -146,9 +147,6 @@
           this.dateRules
         }
       },
-      randomNumbers() {
-        return Math.floor(Math.random() * 100)
-      },
       tabFilter(exercises) {
         return exercises.filter(exercise => 'tab-' + exercise.id == this.currentItem)
       },
@@ -157,9 +155,6 @@
       }
     },
     computed: {
-      formattedDate() {
-        return this.date ? moment(this.date).format('ll') : ''
-      },
       showExerciseCategories() {
         return this.$store.getters.getExerciseCategories;
       },

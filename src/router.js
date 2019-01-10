@@ -9,6 +9,7 @@ import Workout from '@/views/Workout';
 import Timeline from '@/views/MyTimeline';
 import ViewProfile from '@/views/Profile';
 import UserProfile from '@/views/MyProfile';
+import Card from '@/views/WorkoutCard';
 import firebase from 'firebase';
 
 Vue.use(Router)
@@ -63,6 +64,14 @@ const router = new Router({
       path: '/workouts/:id',
       name: 'Workout',
       component: Workout,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/workouts/:id/:name',
+      name: 'Card',
+      component: Card,
       meta: {
         requiresAuth: true
       }

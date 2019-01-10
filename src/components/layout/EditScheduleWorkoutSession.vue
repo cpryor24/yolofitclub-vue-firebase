@@ -14,7 +14,7 @@
             <v-layout row wrap>
               <v-flex xs12 mb-3>
                 <v-expansion-panel popout focusable v-for="(exerciseCategory,i) in tabFilter(showExerciseCategories)" :key="i">
-                  <v-expansion-panel-content  v-for="(exercise, index) in workoutSession.workout" :key="index">
+                  <v-expansion-panel-content  v-for="(exercise, index) in exerciseCategory.workout" :key="index">
                     <v-icon slot="actions" color="primary">$vuetify.icons.expand</v-icon>
                     <div slot="header" x>{{ exercise.name }}</div>
                     <v-card >
@@ -30,12 +30,12 @@
                         </v-layout>
                         <h2>Instructions</h2>
                         <ol>
-                          <li v-for="(instruction, i) in exercise.instructions" :key="i">{{ workoutSession.instruction }}</li>
+                          <li v-for="(instruction, i) in exercise.instructions" :key="i">{{ instruction }}</li>
                         </ol>
                         <v-divider></v-divider>
                         <v-spacer></v-spacer>
                         <v-container fluid>
-                          <p>Please select your exercises for this workout session: {{ workoutSession.selectedExercises }}</p>
+                          <p>Please select your exercises for this workout session: {{ exerciseCategory.selectedExercises }}</p>
                           <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise.name"></v-switch>
                         </v-container>
                       </v-card-text>
@@ -63,8 +63,8 @@
       <v-text-field label="Title" v-model="workoutSession.title" prepend-icon="folder" :rules="inputRules"></v-text-field>
       <v-textarea label="Workout Details" v-model="workoutSession.content" prepend-icon="edit"></v-textarea>
       <v-container fluid>
-        <p>List of exercises for this workout session: {{ workoutSession.selectedExercises }} {{ workoutSession }}</p>
-        <v-switch v-for="(ws, i) in workoutSession.selectedExercises" :key="i" v-model="workoutSession.selectedExercises" :label="ws" :value="ws"></v-switch>
+        <p>List of exercises for this workout session: {{ selectedExercises }} {{ workoutSession.selectedExercises }}</p>
+        <!-- <v-switch v-for="(ws, i) in exerciseCategory.selectedExercises" :key="i" v-model="exerciseCategory.selectedExercises" :label="ws" :value="ws"></v-switch> -->
       </v-container>
       <v-spacer></v-spacer>
       <v-btn flat class="success mx-0" @click="submit" :loading="loading">Edit Workout Session</v-btn>
@@ -84,6 +84,7 @@
         status: null,
         user: null,
         alias: null,
+        time: null,
         inputRules: [
           v => !!v || 'This field is required'
         ],
@@ -110,6 +111,7 @@
       submit() {
         if(this.$refs.form.validate()){
           this.loading = true;
+          this.time = moment(new Date()).format('ll');
           if(moment(this.date).format('ll') < moment(new Date()).format('ll')){
             this.status = 'overdue';
           } else {
@@ -123,11 +125,12 @@
             user_id: this.user,
             selectedExercises: this.selectedExercises,
             status: this.status,
-            createdAt: moment(new Date()).format('l'),
-            updatedAt: null
+            updatedAt: this.time
           }
 
-          this.$store.dispatch('addWorkoutSession', workout);
+          console.log('selected', this.selectedExercises)
+          console.log('time', this.time)
+          this.$store.dispatch('editWorkoutSession', workout);
           this.loading = false;
           this.dialog = false;
           this.selectedExercises = [];
@@ -138,8 +141,6 @@
         }
       },
       tabFilter(exercises) {
-        console.log('filter exercise', exercises)
-        console.log('workoutSession', this.workoutSession)
         return exercises.filter(exercise => 'tab-' + exercise.id == this.currentItem)
         
       },

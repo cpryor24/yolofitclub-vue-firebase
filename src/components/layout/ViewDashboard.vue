@@ -41,7 +41,7 @@
               <v-chip small :class="`${workout.status} white--text caption my-2`">{{ workout.status }}</v-chip>
             </div>
           </v-flex>
-          <v-btn color="info edit" small fab dark @click="multiple(workout.id)"><v-icon>edit</v-icon></v-btn>
+          <v-btn color="info edit" small fab dark @click="multiple(workout.id)" class="edit"><v-icon>edit</v-icon></v-btn>
           <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
           <v-card tile>
             <v-toolbar card dark color="primary">

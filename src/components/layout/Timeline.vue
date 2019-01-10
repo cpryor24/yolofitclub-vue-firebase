@@ -22,7 +22,7 @@
             <p>{{ workout.content }}</p>
           </div>
           <ul v-for="(exercise, index) in workout.selectedExercises" :key="index">
-            <li>{{ exercise }}</li>
+            <li>{{ exercise.name }}</li>
           </ul>
           <v-btn
             color="green"
@@ -40,24 +40,13 @@
 <script>
   export default {
     name: 'Timeline',
-    data() {
-      return {
-        
-      }
-    },
     methods: {
       startWorkout(id) {
-        console.log('id', id)
-        console.log(this.$route.params.id)
-        // this.$router.push({
-        //   name: 'Workout'
-        // })
         this.$store.dispatch('startWorkoutSession', id)
       }
     },
     computed: {
       workouts() {
-        
         return this.$store.getters.getWorkouts;
       }
     },
