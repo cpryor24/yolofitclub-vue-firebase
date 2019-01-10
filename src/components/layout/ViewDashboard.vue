@@ -4,7 +4,8 @@
     <v-container class="my-5">
 
       <v-layout row class="mb-3">
-        <v-tooltip top>
+        <v-flex xs12>
+          <v-tooltip top>
           <v-btn small flat right color="grey" @click="sortBy('title')" slot="activator">
             <v-icon left small>folder</v-icon>
             <span class="caption text-lowercase">By workout title</span>
@@ -19,9 +20,32 @@
           </v-btn>
           <span>Sort by status</span>
         </v-tooltip>
+        </v-flex>
+        
+        <!-- <v-layout v-if="workouts"> -->
+          <v-flex xs12 right>
+            <v-btn color="info" dark @click="dialog = true">New Workout</v-btn>
+            <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+              <v-card tile>
+                <v-toolbar card dark color="primary">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>close</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>Workout Session</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-card-text>
+                  <ScheduleWorkoutSession @workoutAdded="snackbar = true" />
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-flex>
+          
+        <!-- </v-layout> -->
       </v-layout>
 
       <v-card flat v-for="workout in workouts" :key="workout.id">
+        
         <v-layout row wrap :class="`pa-3 workout ${workout.status}`">
           
           <v-flex xs12 md6>
@@ -63,6 +87,7 @@
       </v-card>
 
     </v-container>
+    
   </div>
 </template>
 
@@ -70,12 +95,14 @@
   import db from '@/firebase/fb';
   import firebase from 'firebase';
   import EditScheduleWorkoutSession from '@/components/layout/EditScheduleWorkoutSession';
+  import ScheduleWorkoutSession from '@/components/layout/ScheduleWorkoutSession';
 
   export default {
     
     name: 'ViewDashboard',
     components: {
-      EditScheduleWorkoutSession
+      EditScheduleWorkoutSession,
+      ScheduleWorkoutSession
     },
     data() {
       return {

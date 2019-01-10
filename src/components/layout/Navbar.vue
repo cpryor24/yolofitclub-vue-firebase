@@ -51,8 +51,8 @@
         <!-- <v-flex class="mt-4 mb-3">
           <ScheduleWorkout @workoutAdded="snackbar = true" />
         </v-flex> -->
-      <!-- <v-layout row justify-center> -->
-        <v-btn color="success" dark @click="dialog = true">New Workout Session</v-btn>
+      <v-layout row justify-center>
+        <v-btn color="info" dark @click="dialog = true">New Workout Session</v-btn>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
           <v-card tile>
             <v-toolbar card dark color="primary">
@@ -67,7 +67,7 @@
             </v-card-text>
           </v-card>
         </v-dialog>
-      <!-- </v-layout> -->
+      </v-layout>
       </v-layout>
 
       <v-list >

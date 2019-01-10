@@ -108,7 +108,7 @@
   </v-card>
       </v-flex>
       <v-flex>
-        <ViewProfile />
+        <!-- <ViewProfile /> -->
       </v-flex>
     </v-container>
   </v-layout>
@@ -116,12 +116,12 @@
 </template>
 
 <script>
-  import ViewProfile from '@/components/layout/ViewProfile';
+  // import ViewProfile from '@/components/layout/ViewProfile';
   export default {
-    name: 'UserTestForm',
-    components: {
-      ViewProfile
-    },
+    name: 'UserProfile',
+    // components: {
+    //   ViewProfile
+    // },
     data () {
       return {
         hasSaved: false,
