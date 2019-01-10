@@ -5,11 +5,11 @@
       <v-btn flat color="White" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
-    <v-toolbar flat app>
-      <v-toolbar-side-icon floating class="grey--text" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
+    <v-toolbar flat app style="position: relative;">
+      <v-toolbar-side-icon floating absolute right bottom class=" info" @click="drawer = !drawer" v-if="user"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <router-link :to="{ name: 'Dashboard' }">
-          <span class="font-weight-light">iTalk</span>
+          <span class="font-weight-light"><span class="text-lowercase">i</span>Talk</span>
           <span> Fitness</span>
         </router-link>
       </v-toolbar-title>
@@ -32,9 +32,9 @@
       <v-btn flat color="grey" v-if="!user">
         <span><router-link :to="{ name: 'Login' }">Login</router-link></span>
       </v-btn>
-      <ul>
+      <!-- <ul>
         <li v-if="user">{{ user.email }}</li>
-      </ul>
+      </ul> -->
       <v-btn flat color="grey" v-if="user">
         <span><a @click="logout">Logout</a></span>
       </v-btn>
@@ -44,15 +44,13 @@
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
-            <img src="">
+            <img src="@/assets/avatar.jpeg">
           </v-avatar>
-          <p class="white--text subheading mt-1" v-if="user">{{ user.email }}</p>
         </v-flex>
-        <!-- <v-flex class="mt-4 mb-3">
-          <ScheduleWorkout @workoutAdded="snackbar = true" />
-        </v-flex> -->
+        <p class="white--text subheading mt-1" v-if="user">{{ user.email }}</p>
+
       <v-layout row justify-center>
-        <v-btn color="info" dark @click="dialog = true">New Workout Session</v-btn>
+        <v-btn color="info" dark @click="dialog = true">Add Workout</v-btn>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
           <v-card tile>
             <v-toolbar card dark color="primary">
@@ -81,7 +79,7 @@
         </v-list-tile>
 
         <v-dialog v-model="dialog2" persistent max-width="320" center>
-        <v-list-tile class="warning darken-1" align-center>
+        <v-list-tile class="info darken-1" align-center>
           <v-list-tile-action>
             <v-icon class="white--text">nature_people</v-icon>
           </v-list-tile-action>
@@ -96,7 +94,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="warning darken-1" flat @click="dialog2 = false">Close</v-btn>
+            <v-btn color="info darken-1" flat @click="dialog2 = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

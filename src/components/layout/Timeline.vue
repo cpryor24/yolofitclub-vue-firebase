@@ -4,18 +4,18 @@
     <v-timeline align-top >
       <v-timeline-item 
         v-for="(workout, i) in workouts"
-        color="purple darken-1"
+        color="primary darken-1"
         icon=""
         :key="i"
         fill-dot
       >
         <span
           slot="opposite"
-          class="headline font-weight-bold green--text darken-1"
+          class="headline font-weight-bold info--text darken-1"
           v-text="workout.date"
         ></span>
         <v-card
-          color="indigo"
+          color="info"
           dark
         >
           <v-card-title class="title">{{ workout.title }}</v-card-title>
@@ -27,7 +27,7 @@
               <li>{{ exercise.name }}</li>
             </ul>
             <v-btn
-              color="green"
+              color="primary"
               class="mx-0"
               outline
               @click="startWorkout(workout.id)"

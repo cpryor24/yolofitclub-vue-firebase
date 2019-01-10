@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
-    <h1 class="subheading greay--text">Dashboard</h1>
-    <v-container class="my-5">
-
+    
+    <v-container class="my-3">
+      <h1 class="subheading greay--text">Dashboard</h1>
       <v-layout row class="mb-3">
         <v-flex xs12>
           <v-tooltip top>
@@ -23,8 +23,9 @@
         </v-flex>
         
         <!-- <v-layout v-if="workouts"> -->
-          <v-flex xs12 right>
-            <v-btn color="info" dark @click="dialog = true">New Workout</v-btn>
+          <v-flex xs12 >
+            <v-spacer></v-spacer>
+            <v-btn color="info" dark @click="dialog = true">Add Workout</v-btn>
             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
               <v-card tile>
                 <v-toolbar card dark color="primary">

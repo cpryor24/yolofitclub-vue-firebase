@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="showExerciseCategories">
-    <v-toolbar color="cyan" dark tabs>
+    <v-toolbar color="info" dark tabs>
       <v-tabs slot="extension" v-model="currentItem" color="transparent" fixed-tabs show-arrows>
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab v-for="item in items" :href="'#tab-' + item" :key="item">{{ item }}</v-tab>
@@ -35,8 +35,8 @@
                         <v-divider></v-divider>
                         <v-spacer></v-spacer>
                         <v-container fluid>
-                          <p v-if="selectedExercises != []">Please select your exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
-                          <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise"></v-switch>
+                          <p v-if="selectedExercises.length">Please select your exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
+                          <v-switch @change="selectExercise(exercise)" color="info" :label="exercise.name" :value="selectedExercises.filter(ex=>ex.name==exercise.name).length"> </v-switch>
                         </v-container>
                       </v-card-text>
                     </v-card>
@@ -67,7 +67,7 @@
         <!-- <v-switch v-model="selectedExercises" label="Dumbbell Bench Press" value="Dumbbell Bench Press"></v-switch> -->
       </v-container>
       <v-spacer></v-spacer>
-      <v-btn flat class="success mx-0" @click="submit" :loading="loading">Add Workout Session</v-btn>
+      <v-btn flat class="primary mx-0"  @click="submit" :loading="loading">Add Workout Session</v-btn>
     </v-form>
   </v-container>
 </template>
@@ -120,7 +120,8 @@
       submit() {
         if(this.$refs.form.validate()){
           this.loading = true;
-          if(moment(this.date).format('ll') < moment(new Date()).format('ll')){
+
+          if(moment(this.date).isBefore( moment(new Date()).format('ll')) ){
             this.status = 'overdue';
           } else {
             this.status = 'ongoing';
@@ -154,6 +155,14 @@
       },
       userSelectedExercises() {
         this.$store.dispatch('setExercises')
+      },
+
+      selectExercise(ex){
+        if(this.selectedExercises.find(exer => exer.name === ex.name)){
+          this.selectedExercises = this.selectedExercises.filter(exer => exer.name !== ex.name);
+        }else{
+          this.selectedExercises.push(ex);
+        }
       }
     },
     computed: {

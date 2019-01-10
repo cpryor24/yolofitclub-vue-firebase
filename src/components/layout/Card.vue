@@ -1,6 +1,6 @@
 <template>
   <div class="add-workout container">
-    <h2 class="center-align red--text">Complete Exercise</h2>
+    <h2 class="center-align primary--text">Complete {{ session.name }} Exercise</h2>
     <v-layout justify-center>
       <v-flex xs12 sm6 md12>
         <v-card>
@@ -42,23 +42,23 @@
                       <v-flex>
                         <div class="new-row px-2 " v-for="(rep, index) in exerciseRepsNWeight" :key="index">
                           <span >
-                            <v-text-field class="new-fields" label="Reps" v-model="exerciseRepsNWeight[index].reps" :rules="repsRules"></v-text-field>
+                            <v-text-field :disabled="disabled" class="new-fields" label="Reps" v-model="exerciseRepsNWeight[index].reps" :rules="repsRules"></v-text-field>
                           </span>
                           <span >
-                            <v-text-field  class="new-fields " label="Weight" v-model="exerciseRepsNWeight[index].weight" :rules="weightRules"></v-text-field>
+                            <v-text-field :disabled="disabled"  class="new-fields " label="Weight" v-model="exerciseRepsNWeight[index].weight" :rules="weightRules"></v-text-field>
                           </span >
                           <v-icon v-if="exerciseRepsNWeight != []" @click="deleteRepWeight(index)" small class="delete">delete</v-icon>
                         </div>
                         <div class="new-row px-2">
                           <v-text-field class="new-fields" label="Reps" v-model="reps" :rules="repsRules"></v-text-field>
                           <v-text-field  class="new-fields" label="Weight" v-model="weight" :rules="weightRules"></v-text-field>
-                          <v-btn flat fab small dark class="success mx-0 add-btn" @click="addRow" ><v-icon>add</v-icon></v-btn>
+                          <v-btn flat fab small dark class="info mx-0 add-btn" @click="addRow" ><v-icon>add</v-icon></v-btn>
                         </div>
                       </v-flex>
                       <v-divider></v-divider>
                       <v-spacer></v-spacer>
                       <div class="my-2">
-                        <v-btn flat small center class="success mx-0 " @click="completeExercise(session.name)" :loading="loading" :rules="submitRules">Complete</v-btn>
+                        <v-btn flat small center class="info mx-0 " @click="completeExercise(session.name)" :loading="loading" :rules="submitRules">Complete</v-btn>
                         <div :rules="submitRules"></div>
                       </div>
                     </v-form>
@@ -77,6 +77,7 @@
     name: 'Card',
     data () {
       return {
+        disabled: false,
         reps: null,
         weight: null,
         loading: false,
@@ -94,7 +95,8 @@
             let completedExercises = {
               name: this.exerciseRepsNWeight
             }
-          this.$route.dispatch('finishExercise', submittedExercise)
+          this.$store.dispatch('finishExercise', completedExercises)
+          this.disabled = true;
           this.inputRules = [];
         } else {
           this.inputRules = [v => !!v || 'This field is required']

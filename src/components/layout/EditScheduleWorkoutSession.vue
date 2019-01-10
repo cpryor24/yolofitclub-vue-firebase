@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="showExerciseCategories">
-    <v-toolbar color="cyan" dark tabs>
+    <v-toolbar color="info" dark tabs>
       <v-tabs slot="extension" v-model="currentItem" color="transparent" fixed-tabs show-arrows>
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab v-for="item in items" :href="'#tab-' + item" :key="item">{{ item }}</v-tab>
@@ -35,8 +35,11 @@
                         <v-divider></v-divider>
                         <v-spacer></v-spacer>
                         <v-container fluid>
-                          <p>Please select your exercises for this workout session: {{ exerciseCategory.selectedExercises }}</p>
-                          <v-switch v-model="selectedExercises" color="success" :label="exercise.name" :value="exercise.name"></v-switch>
+                          <!-- <p>Please select your exercises for this workout session: {{ exerciseCategory.selectedExercises }}</p> -->
+                          <!-- <v-switch v-model="selectedExercises" color="info" :label="exercise.name" :value="exercise.name"></v-switch> -->
+                          <p v-if="selectedExercises.length">Please select your exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
+                          <v-switch @change="selectExercise(exercise)" color="info" :label="exercise.name" :value="selectedExercises.filter(ex=>ex.name==exercise.name).length"> </v-switch>
+
                         </v-container>
                       </v-card-text>
                     </v-card>
@@ -63,15 +66,17 @@
       <v-text-field label="Title" v-model="workoutSession.title" prepend-icon="folder" :rules="inputRules"></v-text-field>
       <v-textarea label="Workout Details" v-model="workoutSession.content" prepend-icon="edit"></v-textarea>
       <v-container fluid>
-        <p>List of exercises for this workout session: {{ selectedExercises }} {{ workoutSession.selectedExercises }}</p>
+        <p v-if="selectedExercises != []">List of exercises for this workout session: {{ selectedExercises.map(e => e.name) }}</p>
+
         <!-- <v-switch v-for="(ws, i) in exerciseCategory.selectedExercises" :key="i" v-model="exerciseCategory.selectedExercises" :label="ws" :value="ws"></v-switch> -->
       </v-container>
       <v-spacer></v-spacer>
-      <v-btn flat class="success mx-0" @click="submit" :loading="loading">Edit Workout Session</v-btn>
+      <v-btn flat class="primary mx-0" @click="submit" :loading="loading">Edit Workout Session</v-btn>
     </v-form>
   </v-container>
 </template>
 <script>
+  import moment from 'moment';
   export default {
     name: 'EditWorkoutSession',
     data() {
@@ -112,7 +117,7 @@
         if(this.$refs.form.validate()){
           this.loading = true;
           this.time = moment(new Date()).format('ll');
-          if(moment(this.date).format('ll') < moment(new Date()).format('ll')){
+          if(moment(this.date).isBefore( moment(new Date()).format('ll')) ){
             this.status = 'overdue';
           } else {
             this.status = 'ongoing';
@@ -128,13 +133,12 @@
             updatedAt: this.time
           }
 
-          console.log('selected', this.selectedExercises)
-          console.log('time', this.time)
           this.$store.dispatch('editWorkoutSession', workout);
           this.loading = false;
           this.dialog = false;
           this.selectedExercises = [];
           this.$refs.form.reset();
+          this.$emit('workoutAdded')
         } else {
           this.inputRules,
           this.dateRules

@@ -48,7 +48,10 @@ const store = new Vuex.Store({
       state.uid = firebase.auth().currentUser.uid;
     },
     setDashboard: (state, payload) => {
-      state.workouts = payload;
+        state.workouts = payload;
+    },
+    addDashboard: (state, payload) => {
+      state.workouts = [...state.workouts, ...payload];
     },
     setIsAuthenticated: (state, payload) => {
       state.isAuthenticated = payload;
@@ -58,6 +61,7 @@ const store = new Vuex.Store({
     },
     setWorkoutSession: (state, payload) => {
       state.workoutSession = payload;
+      state.workouts = [...state.workouts, payload]
     },
     setExercise: (state, payload) => {
       state.exercise = payload;
@@ -71,9 +75,9 @@ const store = new Vuex.Store({
       context.commit('setUserId');
     },
     setWorkouts: context => {
-      db.collection('workouts').where('user_id', '==', firebase.auth().currentUser.uid).onSnapshot(res => {
+      db.collection('workouts').where('user_id', '==', firebase.auth().currentUser.uid).get().then(res => {
         const changes = res.docChanges();
-        context.commit('setDashboard', changes.filter(change => change.type == 'added').map(change => ({
+        context.commit('setDashboard', changes.map(change => ({
           ...change.doc.data(),
           id: change.doc.id
         })));
@@ -174,7 +178,7 @@ const store = new Vuex.Store({
       })
     },
     editWorkoutSession: (context, id) => {
-      let ref = db.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
+      let ref = db.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', 'id')
         ref.get().then(snapshot => {
           snapshot.forEach(doc => {
             let workout = doc.data();
@@ -207,6 +211,11 @@ const store = new Vuex.Store({
     },
     finishExercise: (context, submittedExercise) => {
       // let ref = doc.collection('workouts').where(firebase.firestore.FieldPath.documentId(), '==', id)
+      // ref.get().then(snapshot => {
+      //   snapshot.forEach
+      // })
+      router.go(-1)
+
     }
   }
 })
