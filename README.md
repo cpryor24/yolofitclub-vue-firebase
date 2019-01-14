@@ -1,29 +1,7 @@
-# yolofitclub
+# iTalk Fitness
 
 ## Project setup
 ```
-npm install
+iTalk Fitness is a fitness app which allows users to schedule workout sessions by adding exercises, complete a workout session by adding reps and/or weight for each exercise. A user may use the google map to select a user's profile marker to view and/or post a comment on their wall.
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
